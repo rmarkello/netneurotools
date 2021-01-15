@@ -358,5 +358,124 @@
             "5ed80005fabc45000d639900"
         ],
         "md5": "67085e2577d21dc3a742f4fcde6e3b18"
+    },
+    "ds-annotations": {
+        "ASL": {
+            "url": [
+                "mb37e",
+                "6001ed48ba010905ed8a4e71"
+            ],
+            "md5": "6800b7ea63132b0339d5557da2ba42f3",
+            "desc": "Average arterial spin labeling map from the Philadelphia Neurodevelopmental Cohort dataset",
+            "density": "41k"
+        },
+        "bigbrain_infra": {
+            "url": [
+                "mb37e",
+                "6001ed48e80d370635a57ad1"
+            ],
+            "md5": "5c16fe7649451596a2fa3db466873bc0",
+            "desc": "Infragranular layer stain intensity/density map from the BigBrain dataset",
+            "density": "41k"
+        },
+        "bigbrain_supra": {
+            "url": [
+                "mb37e",
+                "6001ed48ba010905fa89063f"
+            ],
+            "md5": "361df07f2e28c936937d4c3608a57faf",
+            "desc": "Supragranular layer stain intensity/density map from the BigBrain dataset",
+            "density": "41k"
+        },
+        "glasser_CBF": {
+            "url": [
+                "mb37e",
+                "6001ed4786541a063d14aae9"
+            ],
+            "md5": "c7ab5cf310d97905ca9eab9df7b3f937",
+            "desc": "Cerebral blood flow map",
+            "density": "41k"
+        },
+        "glasser_CBV": {
+            "url": [
+                "mb37e",
+                "6001ed47ba010905f9890c2a"
+            ],
+            "md5": "87906037d95fcf100ef630517e9a55e5",
+            "desc": "Cerebral blood volume map",
+            "density": "41k"
+        },
+        "glasser_CMRGlu": {
+            "url": [
+                "mb37e",
+                "6001ed4b86541a063d14aaf9"
+            ],
+            "md5": "00fb4116682f47ca9608460adfb61b36",
+            "desc": "Cerebral metabolic rate of glucose map",
+            "density": "41k"
+        },
+        "glasser_CMRO2": {
+            "url": [
+                "mb37e",
+                "6001ed4de80d37062da5a3e9"
+            ],
+            "md5": "2332e1796fd902698097a3f3b76831ce",
+            "desc": "Cerebral metabolic rate of oxygen map",
+            "density": "41k"
+        },
+        "glasser_GI": {
+            "url": [
+                "mb37e",
+                "6001ed4bba010905ea893b93"
+            ],
+            "md5": "63309b891b816219cacab9d28d8ad2d6",
+            "desc": "Glycolytic index map (created from glasser_CMRO2 and glasser_CMRGlu), a proxy for aerobic glycolysis",
+            "density": "41k"
+        },
+        "hill_development": {
+            "url": [
+                "mb37e",
+                "6001ed4d86541a063c14a514"
+            ],
+            "md5": "61ac5465372c3b59641375f878c2741d",
+            "desc": "Developmental scaling (infant to adult) map",
+            "density": "41k"
+        },
+        "hill_evolution": {
+            "url": [
+                "mb37e",
+                "6001ed4de80d370634a57209"
+            ],
+            "md5": "4298462fc102d2602632f4608b5d914a",
+            "desc": "Evolutionary scaling (macaque to human) map",
+            "density": "41k"
+        },
+        "scaling_HCP": {
+            "url": [
+                "mb37e",
+                "6001ed4fba010905f9890c4c"
+            ],
+            "md5": "b00c93b337c2e570c8a2a2023591dd51",
+            "desc": "Allometric surface area scaling map from the Human Connectome Project dataset",
+            "density": "41k"
+        },
+        "scaling_NIH": {
+            "url": [
+                "mb37e",
+                "6001ed50e80d370635a57aeb"
+            ],
+            "md5": "a3d56540ce0afc10c5d1955edd26b069",
+            "desc": "Allometric surface area scaling map from the National Institutes of Health dataset",
+            "density": "41k"
+        },
+        "scaling_PNC": {
+            "url": [
+                "mb37e",
+                "6001ed50ba010905ed8a4e7f"
+            ],
+            "md5": "172d9ec81854d9be96f5851fdfe35af3",
+            "desc": "Allometric surface area scaling map from the Philadelphia Neurodevelopmental Cohort dataset",
+            "density": "41k"
+        }
     }
 }

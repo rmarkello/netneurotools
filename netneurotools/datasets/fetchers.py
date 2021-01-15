@@ -7,8 +7,10 @@ from collections import namedtuple
 import itertools
 import json
 import os.path as op
+from typing import Iterable
 import warnings
 
+import nibabel as nib
 from nilearn.datasets.utils import _fetch_files
 import numpy as np
 from sklearn.utils import Bunch
@@ -667,3 +669,104 @@ def fetch_voneconomo(data_dir=None, url=None, resume=True, verbose=1):
     data = [ANNOT(*data[:-1:2])] + [ANNOT(*data[1:-1:2])] + [data[-1]]
 
     return Bunch(**dict(zip(keys, data)))
+
+
+def available_annotations(return_description=False):
+    """
+    Lists datasets available via :func:`~.fetch_annotation`
+
+    Parameters
+    ----------
+    return_description : bool, optional
+        Whether to return description of each dataset. Default: False
+
+    Returns
+    -------
+    datasets : list-of-str or dict
+        List of available annotations. If `return_description` is True, a dict
+        is returned instead where keys are available annotations and values are
+        brief descriptions of the annotation.
+    """
+
+    info = _get_dataset_info('ds-annotations')
+    if return_description:
+        return {k: info[k]['desc'] for k in sorted(info.keys())}
+    return sorted(info.keys())
+
+
+def fetch_annotation(annotation, data_dir=None, url=None, resume=True,
+                     verbose=1):
+    """
+    Downloads files for brain annotations
+
+    Parameters
+    ----------
+    dataset : str or list-of-str
+        Specifies which dataset to download; must be one of the datasets listed
+        in :func:`netneurotools.datasets.available_annotations()`. If a list is
+        provided then the returned object will be a dict-of-dicts, where keys
+        are the requested annotations.
+    data_dir : str, optional
+        Path to use as data directory. If not specified, will check for
+        environmental variable 'NNT_DATA'; if that is not set, will use
+        `~/nnt-data` instead. Default: None
+    url : str, optional
+        URL from which to download data. Default: None
+    resume : bool, optional
+        Whether to attempt to resume partial download, if possible. Default:
+        True
+    verbose : int, optional
+        Modifies verbosity of download, where higher numbers mean more updates.
+        Default: 1
+
+    Returns
+    -------
+    data : :class:`sklearn.utils.Bunch`
+        Dictionary-like object with keys ['data', 'ref'], where 'data' is a
+        numpy array containing the annotation and 'ref' is the supporting
+        reference from which the data were compiled.
+
+    References
+    ----------
+    See `ref` key of returned dictionary object for relevant dataset reference
+    """
+
+    if annotation == 'all':
+        annotation = available_annotations(return_description=False)
+
+    # if we're given a list just go through them all
+    if isinstance(annotation, Iterable) and not isinstance(annotation, str):
+        return {a: fetch_annotation(a, data_dir=data_dir, url=url,
+                                    resume=resume, verbose=verbose)
+                for a in annotation}
+
+    avail = available_annotations()
+    if annotation not in avail:
+        raise ValueError('Provided dataset {} not available; must be one of {}'
+                         .format(annotation, avail))
+
+    dataset_name = 'ds-annotations'
+    data_dir = op.join(_get_data_dir(data_dir=data_dir), dataset_name)
+    info = _get_dataset_info(dataset_name)[annotation]
+    if url is None:
+        url = info['url']
+    opts = {
+        'uncompress': True,
+        'md5sum': info['md5'],
+        'move': '{}.tar.gz'.format(annotation)
+    }
+
+    desc, den = annotation.lower().replace('_', ''), info['density']
+    filenames = [op.join(annotation, f) for f in [
+        f'space-fsaverage_hemi-{hemi}_den-{den}_desc-{desc}.shape.gii'
+        for hemi in ['L', 'R']
+    ] + ['refs.txt']]
+    data = _fetch_files(data_dir, files=[(f, url, opts) for f in filenames],
+                        resume=resume, verbose=verbose)
+
+    # load data
+    out = np.hstack([nib.load(fn).agg_data() for fn in data[:-1]])
+    with open(data[-1]) as src:
+        ref = src.read().strip()
+
+    return Bunch(**{'data': out, 'ref': ref})
